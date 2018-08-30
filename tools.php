@@ -17,7 +17,7 @@ class Tools {
      * @param string $url            
      * @param array $param            
      */
-    public static function post($url, $param) {
+    public static function post($url, $param = NULL) {
         $curl = curl_init ();
         curl_setopt ( $curl, CURLOPT_URL, $url );
         curl_setopt ( $curl, CURLOPT_POST, 1 );
@@ -514,6 +514,134 @@ class Tools {
 	    }
 	} 
 
+
+    /**
+     * 下载图片并且保存到制定文件夹
+     * @param $url 下载地址 $user_token保存文件名 $filePath保存目录
+     */
+    public static function downloadImage($url, $user_token, $filePath)
+    {      
+        $file = self::get($url);
+        $filename=$user_token.".jpg";
+        $path=$filePath.$filename;
+        self::saveAsImage($file, $path);
+    }    
+    private  static function saveAsImage($file, $path)
+    {
+        $resource = fopen($path, 'a');
+        fwrite($resource, $file);
+        fclose($resource);
+    }
+
+
+    /**
+     * 防sql注入,xss攻击
+     */
+    public static function clean($str)
+    {
+        $str = trim($str);        
+        $str = strip_tags($str);        
+        $str = stripslashes($str);        
+        $str = addslashes($str);        
+        $str = rawurldecode($str);        
+        $str = quotemeta($str);        
+        $str = htmlspecialchars($str);        
+        return $str;
+    }
+
+
+    /**
+     * 生成6位数验证码
+     * @param  integer $length [description]
+     * @return [type]          [description]
+     */
+    public static function random_code($length = 6)
+    {
+        $code = rand(pow(10, ($length - 1)), pow(10, $length) - 1);
+        return "$code";
+    }
+
+
+    /**
+     * 产生指定长度的字母和数字字符串（有重复的可能性）
+     * @param  [type] $length [description]
+     * @return [type]         [description]
+     */
+    public static function randomkeys($length)
+    {
+        $returnStr = '';
+        $pattern = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLOMNOPQRSTUVWXYZ';
+        for ($i = 0; $i < $length; $i++) {
+        $returnStr .= $pattern{mt_rand(0, 61)}; //生成php随机数
+        }
+        return $returnStr;
+    }
+
+
+    /**
+     * 生成订单详情号 默认为16位
+     * @param  integer $length [description]
+     * @return [type]          [description]
+     */
+    public static function get_order_id($length = 16)
+    {
+        //见方法一，获得毫秒级别时间戳
+        $time = self::get_millisecond();
+        $len = $length - 13;
+        $str = self::get_nonce_number($len);
+        if (strlen($time) != 13) {
+            $orderId = $str . $time . rand(1, 9);
+        } else {
+            $orderId = $str . $time;
+        }
+        return $orderId;
+     
+    }
+
+
+    /**
+     * 产生随机字符串，不长于32位
+     * @param  integer $length [description]
+     * @return [type]          [description]
+     */
+    public static function get_nonce_number($length = 11)
+    {
+        $chars = "0123456789";
+        $str = "";        for ($i = 0; $i < $length; $i++) {
+            $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
+        }
+        return $str;
+    }
+
+
+    /**
+     * 获得毫秒级别的时间戳
+     * @return [type] [description]
+     */
+    public static function get_millisecond()
+    {
+        //获取毫秒的时间戳
+        $time = explode(" ", microtime());
+        $time = $time[1] . substr($time[0], 2, 3);
+        return $time;
+    }
+
+
+    /**
+     * 读取文件内容
+     */
+    public static function file_read($file_path, $readSize)
+    {
+        if (file_exists($file_path)) {
+            $fp = fopen($file_path, "r");
+            $str = fread($fp, $readSize);
+            $str = str_replace("\r\n", "<br />", $str);
+            fclose($fp);
+            return $str;
+        } else {
+            return false;
+        }
+    }
 
 /**
  * clas end
