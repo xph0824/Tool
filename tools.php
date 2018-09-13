@@ -643,6 +643,20 @@ class Tools {
         }
     }
 
+    /**
+     * 查小于$num的数字中最大的数字。
+     */
+    public static function search( $num_list, $num )
+    {
+        $l = count( $num_list );
+        for( $i=0; $i<$l; $i++ ) {
+            if ( $num_list[$i] >= $num ) {
+                break;
+            }
+        }
+        return $i == 0 ? false : $num_list[$i-1];
+    }
+
 /**
  * clas end
  */
