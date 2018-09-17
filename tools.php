@@ -6,6 +6,8 @@ class Tools {
     //超时时间
     public static $timeout = 5;
     public static $timeoutms = 0;
+    //是否抓取跳转后的页面
+    public static $getmove = 0;
     //执行curl后返回的信息
     public static $getinfo = array('http_code'=>200);
     //浏览器声明
