@@ -1,6 +1,5 @@
 <?php 
 
-
 class Tools {
 
     //超时时间
@@ -32,6 +31,35 @@ class Tools {
         $res_info = self::$getinfo = curl_getinfo($curl);
         curl_close( $curl );
         return $result;
+    }
+
+
+    /**
+     * CURL请求检查服务器文件是否存在
+     * @param $url
+     * @return bool
+     */
+    public function check_remote_file_exists($url)
+    {
+        $curl = curl_init($url);
+        // 不取回数据
+        curl_setopt($curl, CURLOPT_NOBODY, true);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'GET'); //不加这个会返回403，加了才返回正确的200，原因不明
+        // 发送请求
+        $result = curl_exec($curl);
+        $found = false;
+        // 如果请求没有发送失败
+        if ($result !== false)
+        {
+            // 再检查http响应码是否为200
+            $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            if ($statusCode == 200)
+            {
+                $found = true;
+            }
+        }
+        curl_close($curl);
+        return $found;
     }
 
 
