@@ -39,7 +39,7 @@ class Tools {
      * @param $url
      * @return bool
      */
-    public function check_remote_file_exists($url)
+    public static function check_remote_file_exists($url)
     {
         $curl = curl_init($url);
         // 不取回数据
