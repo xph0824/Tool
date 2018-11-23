@@ -1,4 +1,6 @@
-<?php 
+<?php
+
+namespace Demo\Phptools;
 
 class Tools {
 

@@ -1,0 +1,21 @@
+{
+    "name": "xph0824/tool",
+    "description": "phpTool",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "SongYanlong",
+            "email": "songyanlong@imooc.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3"
+    },
+    "autoload": {
+        "psr-4":{
+            "Demo\\Phptool\\": "Demo/Phptool"
+        }
+    }
+}
