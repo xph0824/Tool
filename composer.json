@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4":{
-            "Demo\\Phptool\\": "Demo/Phptool"
+            "Demo\\Phptools\\": "Demo/Phptools"
         }
     }
 }
